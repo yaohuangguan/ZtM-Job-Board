@@ -1,498 +1,969 @@
 // https://sass-lang.com/guide
 
 /* Blue 400-500-600 */
-$color--primary-light: #42A5F5;
-$color--primary: #2196F3;
-$color--primary-dark: #1E88E5;
+$color--primary-light: #42a5f5;
+$color--primary: #2196f3;
+$color--primary-dark: #1e88e5;
 
 /* Amber 400-500-600 */
-$color--secondary-light: #FFCA28;
-$color--secondary: #FFC107;
-$color--secondary-dark: #FFB300;
+$color--secondary-light: #ffca28;
+$color--secondary: #ffc107;
+$color--secondary-dark: #ffb300;
 
 /* Gray 100-500-900 */
-$color--additional1: #F5F5F5;
-$color--additional2: #9E9E9E;
+$color--additional1: #f5f5f5;
+$color--additional2: #9e9e9e;
 $color--additional3: #212121;
 
 $colors: (
-  primary-light: $color--primary-light,
-  primary: $color--primary,
-  primary-dark: $color--primary-dark,
-  secondary-light: $color--secondary-light,
-  secondary: $color--secondary,
-  secondary-dark: $color--secondary-dark,
-  additional1: $color--additional1,
-  additional2: $color--additional2,
-  additional3: $color--additional3
+    primary-light: $color--primary-light,
+    primary: $color--primary,
+    primary-dark: $color--primary-dark,
+    secondary-light: $color--secondary-light,
+    secondary: $color--secondary,
+    secondary-dark: $color--secondary-dark,
+    additional1: $color--additional1,
+    additional2: $color--additional2,
+    additional3: $color--additional3,
 );
 
-
-
-@mixin custom--box-shadow($h1, $v1, $b1, $s1, $h2, $v2, $b2, $s2, $h3, $v3, $b3, $s3) {
-  box-shadow: #{$h1}px #{$v1}px #{$b1}px #{$s1}px rgba(0, 0, 0, 0.2),
-              #{$h2}px #{$v2}px #{$b2}px #{$s2}px rgba(0, 0, 0, 0.14),
-              #{$h3}px #{$v3}px #{$b3}px #{$s3}px rgba(0, 0, 0, 0.12);
+/* Theme colors. The active theme is set on <html data-theme="..."> before first paint (see index.html). */
+:root {
+    --color-page-bg: #eeeeee;
+    --color-surface: #ffffff;
+    --color-surface-muted: #f5f5f5;
+    --color-surface-raised: #ffffff;
+    --color-text: #212121;
+    --color-text-muted: #595959;
+    --color-border: #e0e0e0;
+    --color-card-border: transparent;
+    --color-control-border: #767676;
+    // Deeper amber so the search box stays outlined on white panels
+    --color-search-border: #a67c00;
+    --color-input-bg: #ffffff;
+    --color-placeholder: #6b6b6b;
+    --color-link: #1565c0;
+    --color-focus: #1565c0;
+    /* Accent tint for selected/highlighted states (e.g. skill chips) */
+    --color-highlight-bg: #e3f2fd;
+    --color-highlight-text: #0d47a1;
+    --color-selection: rgba(0, 0, 0, 0.15);
+    --color-bar-bg: #{$color--additional3};
+    --color-bar-text: #ffffff;
+    --color-bar-focus: #{$color--secondary-light};
+    --color-icon: #212121;
+    --color-avatar: rgba(0, 0, 0, 0.5);
+    --color-avatar-hover: #212121;
+    --color-icon-hover-bg: #212121;
+    --color-icon-hover-fg: #ffffff;
+    --color-card-hover-header-bg: #{$color--primary};
+    --color-card-hover-header-text: #212121;
+    --color-card-hover-title-bg: #1565c0;
+    --color-card-hover-title-text: #ffffff;
+    --color-stats-bg: #{$color--primary-light};
+    --color-stats-tile-bg: #212121;
+    --color-stats-text: #ffffff;
+    --color-tooltip-bg: rgba(0, 0, 0, 0.85);
+    --color-tooltip-text: #eeeeee;
+    --color-panel-shadow: rgba(0, 0, 0, 0.12);
+    --color-dropdown-shadow: rgba(0, 0, 0, 0.15);
 }
 
+:root[data-theme='dark'] {
+    --color-page-bg: #121212;
+    --color-surface: #1e1e1e;
+    --color-surface-muted: #2a2a2a;
+    --color-surface-raised: #262626;
+    --color-text: #e8e8e8;
+    --color-text-muted: #b3b3b3;
+    --color-border: #3a3a3a;
+    --color-card-border: #333333;
+    --color-control-border: #8c8c8c;
+    --color-search-border: #{$color--secondary};
+    --color-input-bg: #2a2a2a;
+    --color-placeholder: #a6a6a6;
+    --color-link: #64b5f6;
+    --color-focus: #90caf9;
+    --color-highlight-bg: #0d47a1;
+    --color-highlight-text: #90caf9;
+    --color-selection: rgba(255, 255, 255, 0.2);
+    --color-bar-bg: #1a1a1a;
+    --color-icon: #e8e8e8;
+    --color-avatar: #b3b3b3;
+    --color-icon-hover-bg: #e8e8e8;
+    --color-icon-hover-fg: #121212;
+    --color-stats-bg: #1565c0;
+    --color-stats-tile-bg: #121212;
+    --color-tooltip-bg: #eeeeee;
+    --color-tooltip-text: #212121;
+    --color-panel-shadow: rgba(0, 0, 0, 0.5);
+    --color-dropdown-shadow: rgba(0, 0, 0, 0.6);
+}
 
+.leaflet-container {
+    height: 100%;
+    width: 100%;
+    background-color: var(--color-surface-muted);
+}
+
+/* App-owned Leaflet UI surfaces (map tiles keep their own colors) */
+[data-theme='dark'] {
+    .leaflet-bar a,
+    .leaflet-popup-content-wrapper,
+    .leaflet-popup-tip,
+    .leaflet-tooltip {
+        background-color: var(--color-surface-raised);
+        color: var(--color-text);
+        border-color: var(--color-border);
+    }
+
+    .leaflet-bar a:hover,
+    .leaflet-bar a:focus {
+        background-color: var(--color-surface-muted);
+    }
+
+    .leaflet-bar a.leaflet-disabled {
+        background-color: var(--color-surface);
+        color: var(--color-text-muted);
+    }
+
+    .leaflet-tooltip-top:before {
+        border-top-color: var(--color-surface-raised);
+    }
+    .leaflet-tooltip-bottom:before {
+        border-bottom-color: var(--color-surface-raised);
+    }
+    .leaflet-tooltip-left:before {
+        border-left-color: var(--color-surface-raised);
+    }
+    .leaflet-tooltip-right:before {
+        border-right-color: var(--color-surface-raised);
+    }
+
+    .leaflet-container .leaflet-control-attribution {
+        background-color: rgba(30, 30, 30, 0.85);
+        color: var(--color-text);
+
+        a {
+            color: var(--color-link);
+        }
+    }
+
+    .leaflet-container a.leaflet-popup-close-button {
+        color: var(--color-text-muted);
+    }
+}
+
+/* Map loading state */
+.map-skeleton {
+    height: 90vh;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+        135deg,
+        rgba(33, 150, 243, 0.08),
+        rgba(255, 193, 7, 0.08)
+    );
+    color: var(--color-text);
+}
+
+.map-skeleton__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    text-align: center;
+}
+
+.map-skeleton__content p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.map-skeleton__spinner {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 4px solid rgba(33, 150, 243, 0.2);
+    border-top-color: $color--primary;
+    border-radius: 50%;
+    animation: map-skeleton-spin 0.8s linear infinite;
+}
+
+@keyframes map-skeleton-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+    .map-skeleton__spinner {
+        animation: none;
+    }
+}
+
+@mixin custom--box-shadow(
+    $h1,
+    $v1,
+    $b1,
+    $s1,
+    $h2,
+    $v2,
+    $b2,
+    $s2,
+    $h3,
+    $v3,
+    $b3,
+    $s3
+) {
+    box-shadow:
+        #{$h1}px #{$v1}px #{$b1}px #{$s1}px rgba(0, 0, 0, 0.2),
+        #{$h2}px #{$v2}px #{$b2}px #{$s2}px rgba(0, 0, 0, 0.14),
+        #{$h3}px #{$v3}px #{$b3}px #{$s3}px rgba(0, 0, 0, 0.12);
+}
 
 /* ==================================================================================================== */
 
-
-
 ::selection {
-  background-color: rgba(0, 0, 0, 0.15);
+    background-color: var(--color-selection);
 }
 
 * {
-  transition: color 280ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-              background-color 280ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-              border-color 280ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-              box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition:
+        color 280ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+        background-color 280ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+        border-color 280ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+        box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 *:before,
 *:after {
-  transition: inherit;
+    transition: inherit;
 }
 svg {
-  fill: currentColor;
-  transition: fill 280ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    fill: currentColor;
+    transition: fill 280ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
-
+html,
+body {
+    overflow-x: hidden;
+}
 
 body {
-  min-width: 22.25rem;
-  font-family: "Roboto Condensed", sans-serif;
-  cursor: default;
+    min-width: 22.25rem;
+    font-family: 'Roboto Condensed', sans-serif;
+    cursor: default;
+    background-color: var(--color-page-bg);
+    color: var(--color-text);
 }
 
-a,
-img,
-input {
-  outline: none;
+button,
+input,
+select {
+    font-family: inherit;
 }
 
+button {
+    cursor: pointer;
+}
 
+a:focus:not(:focus-visible),
+img:focus:not(:focus-visible),
+input:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+}
+
+.app-bar {
+    background-color: var(--color-bar-bg);
+    color: var(--color-bar-text);
+    --color-search-border: #{$color--secondary};
+
+    :focus-visible {
+        outline-color: var(--color-bar-focus);
+    }
+}
+
+[data-theme='dark'] header.app-bar {
+    border-bottom: 1px solid var(--color-border);
+}
+
+[data-theme='dark'] footer.app-bar {
+    border-top: 1px solid var(--color-border);
+}
+
+/* Navbar items (Map/Home, Shuffle, theme toggle) */
+.nav-button {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    border-radius: 2px;
+}
+
+.surface-panel {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+}
 
 header {
+    position: sticky;
 
-  padding: 0 5%;
+    .header-items {
+        transition: height 0.3s ease;
+        padding: 1.6rem;
+        align-items: center;
+    }
 
-  .header-items {
-    transition: height 0.3s ease;
-    padding: 0.6rem;
-    align-items: center;
-  }
-
-  /* Some custom media queries below to properly show/hide menu bar stuff. Using tachyons size classes left the menu's layout broken on certain widths*/
-  @media screen and (max-width:47.5rem) {
+    /* Some custom media queries below to properly show/hide menu bar stuff. Using tachyons size classes left the menu's layout broken on certain widths*/
+    @media screen and (max-width: 47.5rem) {
         .hidden {
-          position: absolute;
-          top: -9999px;
-          opacity: 0;
-      }
-  }
-
-  .expand {
-    height: 9rem;
-  }
-
-  @media screen and (min-width:32rem) {
-      .expand {
-        height: 7.8rem;
-      }
+            position: absolute;
+            top: -9999px;
+            opacity: 0;
+        }
     }
 
-  @media screen and (min-width:47.5rem) {
-      .expand {
-        height: 3rem;
-      }
-
-  }
-
-  .collapse {
-    transition: opacity ease-in 0.1s;
-  }
-
-  @media screen and (max-width: 32rem) {
-     .SearchCategory {
-        margin: 1rem 0;
+    .expand {
+        height: 9rem;
     }
-  }
 
-  /* Menu icon stuff from https://www.w3schools.com/howto/howto_css_menu_icon.asp*/
-  .menu-icon {
-    cursor: pointer;
-    margin-left: 2rem;
-  }
+    @media screen and (min-width: 32rem) {
+        .expand {
+            height: 7.8rem;
+        }
+    }
 
-  @media screen and (min-width: 47.5rem) {
+    @media screen and (min-width: 47.5rem) {
+        .expand {
+            height: 3rem;
+        }
+    }
+
+    .collapse {
+        transition: opacity ease-in 0.1s;
+    }
+
+    @media screen and (max-width: 32rem) {
+        .SearchCategory {
+            margin: 1rem 0;
+        }
+    }
+
+    /* Menu icon stuff from https://www.w3schools.com/howto/howto_css_menu_icon.asp*/
     .menu-icon {
-      display: none;
-    }
-  }
-
-  .bar1, .bar2, .bar3 {
-      width: 35px;
-      height: 5px;
-      background-color: $color--primary;
-      margin: 6px 0;
-      transition: 0.4s;
-  }
-
-  /* Rotate first bar */
-  .change .bar1 {
-      -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
-      transform: rotate(-45deg) translate(-9px, 6px) ;
-      background-color: $color--secondary;
-  }
-
-  /* Fade out the second bar */
-  .change .bar2 {
-      transition: 0s;
-      opacity: 0;
-  }
-
-  /* Rotate last bar */
-  .change .bar3 {
-      -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
-      transform: rotate(45deg) translate(-8px, -8px) ;
-      background-color: $color--secondary;
-  }
-
-
-  #title:hover {
-
-    span:nth-child(2) {
-      color: $color--secondary;
-    }
-    span:nth-child(3) {
-      color: currentColor;
+        cursor: pointer;
+        margin-left: 2rem;
     }
 
-  }
+    @media screen and (min-width: 47.5rem) {
+        .menu-icon {
+            display: none;
+        }
+    }
 
+    .bar1,
+    .bar2,
+    .bar3 {
+        width: 35px;
+        height: 5px;
+        background-color: $color--primary;
+        margin: 6px 0;
+        transition: 0.4s;
+    }
+
+    /* Rotate first bar */
+    .change .bar1 {
+        -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+        transform: rotate(-45deg) translate(-9px, 6px);
+        background-color: $color--secondary;
+    }
+
+    /* Fade out the second bar */
+    .change .bar2 {
+        transition: 0s;
+        opacity: 0;
+    }
+
+    /* Rotate last bar */
+    .change .bar3 {
+        -webkit-transform: rotate(45deg) translate(-8px, -8px);
+        transform: rotate(45deg) translate(-8px, -8px);
+        background-color: $color--secondary;
+    }
+
+    #title:hover {
+        span:nth-child(2) {
+            color: $color--secondary;
+        }
+        span:nth-child(3) {
+            color: currentColor;
+        }
+    }
 }
 
- .SearchCategory .radio-box {
+.SearchCategory .radio-box {
     input,
     label {
-      cursor: pointer;
+        cursor: pointer;
     }
     input {
-      visibility: hidden;
-      margin: 0 -0.05rem 0 0.6rem;
+        visibility: hidden;
+        margin: 0 -0.05rem 0 0.6rem;
     }
     input::before,
     input:checked::before,
     input::after,
     .input:checked::after {
-      content: "";
-      visibility: visible;
-      box-sizing: border-box;
-      position: absolute;
-      border-radius: 50%;
+        content: '';
+        visibility: visible;
+        box-sizing: border-box;
+        position: absolute;
+        border-radius: 50%;
     }
     input::before {
-      width: 0.5rem;
-      height: 0.5rem;
-      margin: 0.1875rem;
-      background-color: transparent;
+        width: 0.5rem;
+        height: 0.5rem;
+        margin: 0.1875rem;
+        background-color: transparent;
     }
     input:checked::before {
-      background-color: $color--primary;
+        background-color: $color--primary;
     }
     input::after {
-      height: 0.875rem;
-      width: 0.875rem;
-      border: 0.125rem solid $color--secondary;
+        height: 0.875rem;
+        width: 0.875rem;
+        border: 0.125rem solid $color--secondary;
     }
     input:checked::after {
-      border-color: #FFFFFF;
+        border-color: #ffffff;
     }
+}
 
-  }
-
-  #searchbox {
-
+.searchbox {
     margin: 0 0.6rem 0 0;
 
     input {
-      width: 11rem;
-      padding: 0.3rem;
+        width: 11rem;
+        padding: 0.3rem;
+        background-color: var(--color-input-bg);
+        color: var(--color-text);
+        border-color: var(--color-search-border);
     }
     input::selection {
-      background: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.15);
     }
     input::-moz-selection {
-      background: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.15);
     }
     input::placeholder {
-      color: $color--additional2;
-      opacity: 1;
-    }
-    input:focus::-ms-input-placeholder {
-      color: $color--additional2;
-    }
-    input:focus:-ms-input-placeholder {
-      color: $color--additional2;
+        color: var(--color-placeholder);
+        opacity: 1;
     }
     input:focus,
     input:not(:placeholder-shown) {
-      color: #000000;
-      border-color: $color--primary;
+        color: var(--color-text);
+        border-color: var(--color-focus);
     }
+}
 
-  }
+/* Tooltip container */
+.searchbox-tooltip {
+    position: relative;
+    display: inline-block;
+}
 
+/* Tooltip text */
+.searchbox-tooltip .tooltiptext {
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+
+    /* For Bottom Tooltip */
+    width: 220px;
+    top: 110%;
+    left: 50%;
+    margin-left: -110px; /* Use half of the width (200/2 = 100), to center the tooltip */
+
+    visibility: hidden;
+    width: 220px;
+    background-color: var(--color-tooltip-bg);
+    color: var(--color-tooltip-text);
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+}
+
+/* Show the tooltip text on mouse over or keyboard focus */
+.searchbox-tooltip:hover .tooltiptext,
+.searchbox-tooltip:focus-within .tooltiptext {
+    visibility: visible;
+}
 
 main {
+    margin: 1rem 5%;
 
-  margin: 5rem 5% 1rem 5%;
+    .card {
+        min-height: 26rem;
+        height: auto;
+        background-color: var(--color-surface);
+        color: var(--color-text);
+        border: 1px solid var(--color-card-border);
 
-  .card {
+        .header {
+            padding-top: 1.5rem;
+        }
 
-    height: 24.5rem;
+        .header .photo {
+            margin: 0;
+            box-sizing: border-box;
+            // to maintain aspect ratio of images
+            object-fit: cover;
+            // to keep the card size same as it was before replacing div with background to img
+            margin-bottom: -1rem;
+        }
 
-    .header .photo {
-      margin: 0 auto;
+        .header .name {
+            height: 3.5rem;
+        }
+        .header .photo--fallback {
+            color: var(--color-avatar);
+        }
+        .footer {
+            box-sizing: border-box;
+            justify-content: center;
+            font-size: 1rem;
+            height: 100%;
+            max-height: 4.5rem;
+            min-height: 5rem;
+            width: auto;
+            padding: 1.5rem 1rem 2rem !important;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .header .title {
+            box-sizing: border-box;
+            justify-content: center;
+            height: auto;
+            max-height: 4.5rem;
+            min-height: 5rem;
+            width: auto;
+            padding: 1.2rem 1rem 2rem !important;
+            font-size: 18px;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .main {
+            height: 4.25rem;
+        }
+
+        .main a {
+            position: relative;
+            z-index: 1;
+
+            svg {
+                fill: var(--color-icon);
+
+                path {
+                    cursor: pointer;
+                }
+            }
+        }
+        .main a::before {
+            content: '';
+            width: 2.7rem;
+            height: 2.7rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 100%;
+            background-color: transparent;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        &:hover .header,
+        &:focus-within .header {
+            background-color: var(--color-card-hover-header-bg);
+            color: var(--color-card-hover-header-text);
+        }
+        &:hover .header .photo,
+        &:focus-within .header .photo {
+            border: 0.25rem solid $color--secondary;
+            @include custom--box-shadow(0, 3, 3, -2, 0, 3, 4, 0, 0, 1, 8, 0);
+        }
+        &:hover .header .photo--fallback,
+        &:focus-within .header .photo--fallback {
+            color: var(--color-avatar-hover);
+        }
+        &:hover .header .personId,
+        &:focus-within .header .personId {
+            opacity: 1;
+        }
+        &:hover .header .title,
+        &:focus-within .header .title {
+            color: var(--color-card-hover-title-text);
+            background-color: var(--color-card-hover-title-bg);
+            word-break: break-word;
+            white-space: normal;
+            overflow: hidden;
+        }
+        &:hover .footer,
+        &:focus-within .footer {
+            background-color: var(--color-surface-muted);
+            word-break: break-word;
+            white-space: normal;
+            overflow: hidden;
+        }
+
+        .main a:hover svg,
+        .main a:focus-visible svg {
+            fill: var(--color-icon-hover-fg);
+        }
+        .main a:hover::before,
+        .main a:focus-visible::before {
+            background-color: var(--color-icon-hover-bg);
+        }
+        .main a:focus-visible {
+            outline: none;
+        }
+        .main a:focus-visible::before {
+            box-shadow:
+                0 0 0 2px var(--color-surface),
+                0 0 0 4px var(--color-focus);
+        }
     }
-    .header .photo::before {
-      content: "";
-      position: relative;
-      display: block;
-      width: 100%;
-      height: 100%;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='000000' fill-opacity='0.25' viewBox='0 0 24 24'%3E %3Cpath d='M9,11.75A1.25,1.25 0 0,0 7.75,13A1.25,1.25 0 0,0 9,14.25A1.25,1.25 0 0,0 10.25,13A1.25,1.25 0 0,0 9,11.75M15,11.75A1.25,1.25 0 0,0 13.75,13A1.25,1.25 0 0,0 15,14.25A1.25,1.25 0 0,0 16.25,13A1.25,1.25 0 0,0 15,11.75M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,11.71 4,11.42 4.05,11.14C6.41,10.09 8.28,8.16 9.26,5.77C11.07,8.33 14.05,10 17.42,10C18.2,10 18.95,9.91 19.67,9.74C19.88,10.45 20,11.21 20,12C20,16.41 16.41,20 12,20Z' /%3E %3C/svg%3E");
-      z-index: -1;
-    }
 
-    .header .name,
-    .footer {
-      height: 3.5rem;
+    canvas.sketch {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
     }
-
-    .header .title {
-      height: 3rem;
-    }
-
-    .main {
-      height: 4.25rem;
-    }
-
-    .main a {
-      position: relative;
-      z-index: 1;
-
-      svg {
-        fill: #000000;
-      }
-
-    }
-    .main a::before {
-      content: "";
-      width: 2.7rem;
-      height: 2.7rem;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      border-radius: 100%;
-      background-color: transparent;
-      transform: translate(-50%, -50%);
-      z-index: -1;
-    }
-
-    &:hover .header {
-      background-color: $color--primary;
-    }
-    &:hover .header .photo {
-      border: 0.25rem solid $color--secondary;
-      @include custom--box-shadow(0, 3, 3, -2, 0, 3, 4, 0, 0, 1, 8, 0);
-    }
-    &:hover .header .personId {
-      opacity: 1;
-    }
-    &:hover .header .title {
-      color: #FFFFFF;
-      background-color: $color--primary-dark;
-    }
-    &:hover .footer {
-      background-color: $color--additional1;
-    }
-
-    .main a:hover svg {
-      fill: #FFFFFF;
-    }
-    .main a:hover::before {
-      background-color: $color--additional3;
-    }
-
-  }
-
-  canvas.sketch {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-  }
-
 }
-
-
 
 footer {
+    padding: 0 5%;
 
-  padding: 0 5%;
+    .repo {
+        fill: #ffffff;
 
-  .repo {
-
-    fill: #FFFFFF;
-
-    &:hover {
-      fill: $color--primary;
+        &:hover {
+            fill: $color--primary;
+        }
     }
-
-  }
-
 }
-
-
 
 /* ==================================================================================================== */
 
-
-
 @each $name, $color in $colors {
-  .custom--text-#{$name} {
-    color: $color;
-  }
-  .custom--bg-#{$name} {
-    background-color: $color;
-  }
-  .custom--b--#{$name} {
-    border-color: $color;
-  }
+    .custom--text-#{$name} {
+        color: $color;
+    }
+    .custom--bg-#{$name} {
+        background-color: $color;
+    }
+    .custom--b--#{$name} {
+        border-color: $color;
+    }
 }
-
-
 
 .custom--o-95 {
-  opacity: 0.95;
+    opacity: 0.95;
 }
-
-
 
 .custom--shadow-0,
 .custom--shadow-hover-0:hover {
-  box-shadow: none;
+    box-shadow: none;
 }
 .custom--shadow-1,
 .custom--shadow-hover-1:hover {
-  @include custom--box-shadow(0, 2, 1, -1, 0, 1, 1, 0, 0, 1, 3, 0);
+    @include custom--box-shadow(0, 2, 1, -1, 0, 1, 1, 0, 0, 1, 3, 0);
 }
 .custom--shadow-2,
 .custom--shadow-hover-2:hover {
-  @include custom--box-shadow(0, 3, 1, -2, 0, 2, 2, 0, 0, 1, 5, 0);
+    @include custom--box-shadow(0, 3, 1, -2, 0, 2, 2, 0, 0, 1, 5, 0);
 }
 .custom--shadow-3,
 .custom--shadow-hover-3:hover {
-  @include custom--box-shadow(0, 3, 3, -2, 0, 3, 4, 0, 0, 1, 8, 0);
+    @include custom--box-shadow(0, 3, 3, -2, 0, 3, 4, 0, 0, 1, 8, 0);
 }
 .custom--shadow-4,
 .custom--shadow-hover-4:hover {
-  @include custom--box-shadow(0, 2, 4, -1, 0, 4, 5, 0, 0, 1, 10, 0);
+    @include custom--box-shadow(0, 2, 4, -1, 0, 4, 5, 0, 0, 1, 10, 0);
 }
 .custom--shadow-5,
 .custom--shadow-hover-5:hover {
-  @include custom--box-shadow(0, 3, 5, -1, 0, 5, 8, 0, 0, 1, 14, 0);
+    @include custom--box-shadow(0, 3, 5, -1, 0, 5, 8, 0, 0, 1, 14, 0);
 }
 .custom--shadow-6,
 .custom--shadow-hover-6:hover {
-  @include custom--box-shadow(0, 3, 5, -1, 0, 6, 10, 0, 0, 1, 18, 0);
+    @include custom--box-shadow(0, 3, 5, -1, 0, 6, 10, 0, 0, 1, 18, 0);
 }
 .custom--shadow-7,
 .custom--shadow-hover-7:hover {
-  @include custom--box-shadow(0, 4, 5, -2, 0, 7, 10, 1, 0, 2, 16, 1);
+    @include custom--box-shadow(0, 4, 5, -2, 0, 7, 10, 1, 0, 2, 16, 1);
 }
 .custom--shadow-8,
 .custom--shadow-hover-8:hover {
-  @include custom--box-shadow(0, 5, 5, -3, 0, 8, 10, 1, 0, 3, 14, 2);
+    @include custom--box-shadow(0, 5, 5, -3, 0, 8, 10, 1, 0, 3, 14, 2);
 }
 .custom--shadow-9,
 .custom--shadow-hover-9:hover {
-  @include custom--box-shadow(0, 5, 6, -3, 0, 9, 12, 1, 0, 3, 16, 2);
+    @include custom--box-shadow(0, 5, 6, -3, 0, 9, 12, 1, 0, 3, 16, 2);
 }
 .custom--shadow-10,
 .custom--shadow-hover-10:hover {
-  @include custom--box-shadow(0, 6, 6, -3, 0, 10, 14, 1, 0, 4, 18, 3);
+    @include custom--box-shadow(0, 6, 6, -3, 0, 10, 14, 1, 0, 4, 18, 3);
 }
 .custom--shadow-11,
 .custom--shadow-hover-11:hover {
-  @include custom--box-shadow(0, 6, 7, -4, 0, 11, 15, 1, 0, 4, 20, 3);
+    @include custom--box-shadow(0, 6, 7, -4, 0, 11, 15, 1, 0, 4, 20, 3);
 }
 .custom--shadow-12,
 .custom--shadow-hover-12:hover {
-  @include custom--box-shadow(0, 7, 8, -4, 0, 12, 17, 2, 0, 5, 22, 4);
+    @include custom--box-shadow(0, 7, 8, -4, 0, 12, 17, 2, 0, 5, 22, 4);
 }
 .custom--shadow-13,
 .custom--shadow-hover-13:hover {
-  @include custom--box-shadow(0, 7, 8, -4, 0, 13, 19, 2, 0, 5, 24, 4);
+    @include custom--box-shadow(0, 7, 8, -4, 0, 13, 19, 2, 0, 5, 24, 4);
 }
 .custom--shadow-14,
 .custom--shadow-hover-14:hover {
-  @include custom--box-shadow(0, 7, 9, -4, 0, 14, 21, 2, 0, 5, 26, 4);
+    @include custom--box-shadow(0, 7, 9, -4, 0, 14, 21, 2, 0, 5, 26, 4);
 }
 .custom--shadow-15,
 .custom--shadow-hover-15:hover {
-  @include custom--box-shadow(0, 8, 9, -5, 0, 15, 22, 2, 0, 6, 28, 5);
+    @include custom--box-shadow(0, 8, 9, -5, 0, 15, 22, 2, 0, 6, 28, 5);
 }
 .custom--shadow-16,
 .custom--shadow-hover-16:hover {
-  @include custom--box-shadow(0, 8, 10, -5, 0, 16, 24, 2, 0, 6, 30, 5);
+    @include custom--box-shadow(0, 8, 10, -5, 0, 16, 24, 2, 0, 6, 30, 5);
 }
 .custom--shadow-17,
 .custom--shadow-hover-17:hover {
-  @include custom--box-shadow(0, 8, 11, -5, 0, 17, 26, 2, 0, 6, 32, 5);
+    @include custom--box-shadow(0, 8, 11, -5, 0, 17, 26, 2, 0, 6, 32, 5);
 }
 .custom--shadow-18,
 .custom--shadow-hover-18:hover {
-  @include custom--box-shadow(0, 9, 11, -5, 0, 18, 28, 2, 0, 7, 34, 6);
+    @include custom--box-shadow(0, 9, 11, -5, 0, 18, 28, 2, 0, 7, 34, 6);
 }
 .custom--shadow-19,
 .custom--shadow-hover-19:hover {
-  @include custom--box-shadow(0, 9, 12, -6, 0, 19, 29, 2, 0, 7, 36, 6);
+    @include custom--box-shadow(0, 9, 12, -6, 0, 19, 29, 2, 0, 7, 36, 6);
 }
 .custom--shadow-20,
 .custom--shadow-hover-20:hover {
-  @include custom--box-shadow(0, 10, 13, -6, 0, 20, 31, 3, 0, 8, 38, 7);
+    @include custom--box-shadow(0, 10, 13, -6, 0, 20, 31, 3, 0, 8, 38, 7);
 }
 .custom--shadow-21,
 .custom--shadow-hover-21:hover {
-  @include custom--box-shadow(0, 10, 13, -6, 0, 21, 33, 3, 0, 8, 40, 7);
+    @include custom--box-shadow(0, 10, 13, -6, 0, 21, 33, 3, 0, 8, 40, 7);
 }
 .custom--shadow-22,
 .custom--shadow-hover-22:hover {
-  @include custom--box-shadow(0, 10, 14, -6, 0, 22, 35, 3, 0, 8, 42, 7);
+    @include custom--box-shadow(0, 10, 14, -6, 0, 22, 35, 3, 0, 8, 42, 7);
 }
 .custom--shadow-23,
 .custom--shadow-hover-23:hover {
-  @include custom--box-shadow(0, 11, 14, -7, 0, 23, 36, 3, 0, 9, 44, 8);
+    @include custom--box-shadow(0, 11, 14, -7, 0, 23, 36, 3, 0, 9, 44, 8);
 }
 .custom--shadow-24,
 .custom--shadow-hover-24:hover {
-  @include custom--box-shadow(0, 11, 15, -7, 0, 24, 38, 3, 0, 9, 46, 8);
+    @include custom--box-shadow(0, 11, 15, -7, 0, 24, 38, 3, 0, 9, 46, 8);
 }
 
-
-
 .custom--unselectable {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.custom--top-button {
+    position: fixed;
+    cursor: pointer;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+
+    button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $color--primary-dark;
+        color: #ffffff;
+        border: 0;
+        width: 40px;
+        padding: 8px;
+        height: 40px;
+        border-radius: 200px;
+    }
+}
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+/* ==================================================================================================== */
+
+.profile-filters {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: 0 2px 8px var(--color-panel-shadow);
+    border: 1px solid var(--color-card-border);
+}
+
+.profile-filters__clear {
+    background: none;
+    border: 0;
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+    color: var(--color-link);
+    border-radius: 4px;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.profile-filters__control {
+    font-size: 1rem;
+    background-color: var(--color-input-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-control-border);
+
+    &::placeholder {
+        color: var(--color-placeholder);
+        opacity: 1;
+    }
+}
+
+button.profile-filters__control:hover,
+button.profile-filters__control[aria-expanded='true'] {
+    background-color: var(--color-surface-muted);
+}
+
+.profile-filters__dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    width: 100%;
+    min-width: 260px;
+    background-color: var(--color-surface-raised);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 0.75rem;
+    box-shadow: 0 4px 12px var(--color-dropdown-shadow);
+    z-index: 10;
+}
+
+.profile-filters__options {
+    max-height: 220px;
+    overflow-y: auto;
+    margin-top: 0.5rem;
+}
+
+.profile-filters__option {
+    border-radius: 4px;
+
+    &:hover {
+        background-color: var(--color-surface-muted);
+    }
+
+    input {
+        accent-color: var(--color-link);
+    }
+}
+
+.profile-stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: var(--color-stats-bg);
+}
+
+.profile-stats__tile {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--color-stats-tile-bg);
+    color: var(--color-stats-text);
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.profile-stats__label {
+    font-size: 20px;
+}
+
+.profile-stats__value {
+    font-size: 25px;
+}
+
+.empty-state {
+    margin: 2rem auto;
+    padding: 2rem 1rem;
+    max-width: 32rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-surface);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+
+    p {
+        margin: 0;
+    }
+}
+
+.empty-state__title {
+    color: var(--color-text);
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem !important;
+}
+
+.theme-button {
+    background-color: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-control-border);
+
+    &:hover:not(:disabled) {
+        background-color: var(--color-text);
+        color: var(--color-page-bg);
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        color: var(--color-text-muted);
+        border-color: var(--color-border);
+    }
 }
